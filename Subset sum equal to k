@@ -1,0 +1,24 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static boolean subsetSumToK(int n, int k, int arr[]){
+        // Write your code here.
+        boolean[][] dp = new boolean[n+1][k+1];
+        return f(n-1, k, arr, dp);
+    }
+
+    private static boolean f(int i, int target, int arr[], boolean[][] dp){
+        if(target==0) return true;
+        if(i==0) return arr[0]==target;
+        if(dp[i][target]) return true;
+
+        boolean notTake = f(i-1, target, arr, dp);
+
+        boolean take = false;
+        if(target >= arr[i]) {
+            take = f(i-1, target-arr[i], arr, dp);
+        }
+
+        return dp[i][target] = notTake || take;
+    }
+}
