@@ -1,0 +1,28 @@
+import java.util.* ;
+import java.io.*; 
+
+public class Solution{
+    static int knapsack(int[] weight, int[] value, int n, int maxWeight) {
+
+        int[][] dp = new int[n][maxWeight+1];
+        for(int[] d : dp) Arrays.fill(d, -1);
+
+        return steal(n-1, maxWeight, value, weight, dp);
+
+    }
+
+    private static int steal(int i, int mw, int[] value, int[] weight, int[][] dp){
+        if(i==0){
+            if(mw >= weight[0]) return value[0];
+            else return 0;
+        }
+        if(dp[i][mw] != -1) return dp[i][mw];
+
+        int notTake = 0 + steal(i-1, mw, value, weight, dp);
+        int take = Integer.MIN_VALUE;
+        if(mw >= weight[i]){
+            take = value[i] + steal(i-1, mw-weight[i], value, weight, dp);
+        }
+        return dp[i][mw] = Math.max(notTake, take);
+    }
+}
